@@ -1,0 +1,32 @@
+#spring:
+#  config:
+#    activate:
+#      on-profile: "qa"
+#
+#
+#build:
+#  version: 2.0
+#accounts:
+#  message: "Welcome to LGBank QA Card APIs"
+#  contactDetails:
+#    name: "PhamTranDuc-prod"
+#    email: "phamtranducprod@gmail.com"
+#  onCallSupport:
+#    -(+86)2293627
+
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+
+build:
+  version: 2.0
+accounts:
+  message: "Welcome to LGBank QA APIs"
+  contactDetails:
+    name: "PhamTranDuc-qa"
+    email: "phamtranducqa@gmail.com"
+  onCallSupport:
+    -(+86)2293627
+

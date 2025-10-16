@@ -1,12 +1,14 @@
 package com.LGBank.loans.controller;
 
 import com.LGBank.loans.constants.LoansConstants;
+import com.LGBank.loans.dto.LoanContactInforDto;
 import com.LGBank.loans.dto.LoansDto;
 import com.LGBank.loans.dto.ResponseDto;
 import com.LGBank.loans.service.ILoansService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
 public class LoansController {
+
+    @Autowired
+    private LoanContactInforDto loanContactInforDto;
+
+    public LoansController(LoanContactInforDto loanContactInforDto){
+        this.loanContactInforDto=loanContactInforDto;
+    }
 
     private ILoansService iLoansService;
 
@@ -69,6 +77,12 @@ public class LoansController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @GetMapping("/build-infor")
+    public ResponseEntity<LoanContactInforDto> getInfor(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(loanContactInforDto);
     }
 
 }

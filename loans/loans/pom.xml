@@ -12,6 +12,7 @@
 	<artifactId>loans</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>loans</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -92,6 +93,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.6</version>
+				<configuration>
+					<to>
+						<image>phamtranduc/lg_bank_${project.artifactId}:v1</image>
+				</to>
+			</configuration>
+		</plugin>
 		</plugins>
 	</build>
 

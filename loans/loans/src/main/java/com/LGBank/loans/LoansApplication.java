@@ -1,11 +1,14 @@
 package com.LGBank.loans;
 
+import com.LGBank.loans.dto.LoanContactInforDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
+@EnableConfigurationProperties(value = {LoanContactInforDto.class})
 public class LoansApplication {
 
 	public static void main(String[] args) {

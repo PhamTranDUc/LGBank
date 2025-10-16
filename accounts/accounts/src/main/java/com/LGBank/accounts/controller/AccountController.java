@@ -1,24 +1,40 @@
 package com.LGBank.accounts.controller;
 
 import com.LGBank.accounts.constants.AccountsConstants;
+import com.LGBank.accounts.dto.AccountsContactInfoDto;
 import com.LGBank.accounts.dto.CustomerDto;
 import com.LGBank.accounts.dto.ResponseDto;
 import com.LGBank.accounts.service.IAccountService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@AllArgsConstructor
 @Validated
 @RequestMapping(path = "/api")
 public class AccountController {
 
     private IAccountService accountService;
+
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
+
+    @Autowired
+    private Environment environment;
+
+    public AccountController(IAccountService accountService){
+        this.accountService= accountService;
+    }
+
+    @Value("${build.version}")
+    private String buildVersion;
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto){
@@ -60,5 +76,10 @@ public class AccountController {
         }
     }
 
+    @GetMapping("/build-infor")
+    public ResponseEntity<AccountsContactInfoDto> getInfor(){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(accountsContactInfoDto);
+        }
 
 }

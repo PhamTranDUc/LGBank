@@ -1,0 +1,37 @@
+services:
+  accounts:
+    image: "phamtranduc/accounts:v1"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - ptd
+  loans:
+    image: "phamtranduc/lg_bank_loans:v1"
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - ptd
+  cards:
+    image: "phamtranduc/cards:v1"
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - ptd
+networks:
+  ptd:
+    driver: "bridge"

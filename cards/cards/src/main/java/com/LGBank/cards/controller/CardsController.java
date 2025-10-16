@@ -2,12 +2,14 @@ package com.LGBank.cards.controller;
 
 
 import com.LGBank.cards.constants.CardsConstants;
+import com.LGBank.cards.dto.CardInforContactDto;
 import com.LGBank.cards.dto.CardsDto;
 import com.LGBank.cards.dto.ResponseDto;
 import com.LGBank.cards.service.ICardsService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
 public class CardsController {
 
     private ICardsService iCardsService;
+
+    @Autowired
+    private CardInforContactDto cardInforContactDto;
+
+    public CardsController(ICardsService iCardsService){
+        this.iCardsService= iCardsService;
+    }
+
+
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createCard(@Valid @RequestParam
@@ -70,6 +80,12 @@ public class CardsController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @GetMapping("/build-infor")
+    public ResponseEntity<CardInforContactDto> getInfor(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cardInforContactDto);
     }
 
 }

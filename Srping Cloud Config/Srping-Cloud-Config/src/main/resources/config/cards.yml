@@ -1,0 +1,12 @@
+build:
+  version: "1.0"
+accounts:
+  message: "Welcome to LGBank Default Cards APIs"
+  contactDetails:
+    name: "PhamTranDuc-default"
+    email: "phamtranducdefault@gmail.com"
+  onCallSupport:
+    - "(+86)2293627"
+
+
+

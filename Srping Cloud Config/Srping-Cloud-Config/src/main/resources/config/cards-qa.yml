@@ -1,9 +1,3 @@
-spring:
-  config:
-    activate:
-      on-profile: "qa"
-
-
 build:
   version: 2.0
 accounts:
@@ -13,3 +7,4 @@ accounts:
     email: "phamtranducqa@gmail.com"
   onCallSupport:
     -(+86)2293627
+

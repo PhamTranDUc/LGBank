@@ -1,5 +1,6 @@
 build:
   version: "1.0"
+
 accounts:
   message: "Welcome to LGBank Default APIs"
   contactDetails:

@@ -1,9 +1,9 @@
 build:
-  version: 3.0
+  version: "3.0"
 accounts:
-  message: "Welcome to LGBank Prod APIs"
+  message: "Welcome to LGBank Prod Loans APIs"
   contactDetails:
     name: "PhamTranDuc-prod"
     email: "phamtranducprod@gmail.com"
   onCallSupport:
-    -(+86)2293627
+    - "(+86)2293627"

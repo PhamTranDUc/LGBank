@@ -1,0 +1,25 @@
+server:
+  port: 8071
+
+spring:
+  application:
+    name: "configserver"
+
+  profiles:
+    active: git
+#    active: native
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/PhamTranDUc/Microservice_Config.git"
+          default-label: master
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+#        native:
+#          search-locations: classpath:/config
+encrypt:
+  key: "DINHTHIHANPHAMTRANDUC"
+

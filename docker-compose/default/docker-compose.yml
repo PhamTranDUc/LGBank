@@ -1,6 +1,6 @@
 services:
-  rabbid:
-    image: rabbitmq
+  rabbitmq:
+    image: rabbitmq:3-management
     hostname: rabbitmq
     ports:
       - "5672:5672"
@@ -11,8 +11,9 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
-    networks:
-      - ptd
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   configserver:
     image: "phamtranduc/accounts:v1"
@@ -20,7 +21,7 @@ services:
     ports:
       - "8071:8071"
     depends_on:
-      rabbid:
+      rabbitmq:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grey UP || exit 1"
@@ -28,70 +29,44 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - ptd
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
 
   accounts:
     image: "phamtranduc/accounts:v1"
     container_name: accounts-ms
     ports:
       - "8080:8080"
-    depends_on:
-      configserver:
-        condition: service_healthy
-
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - ptd
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "accounts"
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
-      SPRING_PROFILES_ACTIVE: default
 
   loans:
     image: "phamtranduc/lg_bank_loans:v1"
     container_name: loans-ms
     ports:
       - "8090:8090"
-    depends_on:
-      configserver:
-        condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - ptd
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "loans"
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
-      SPRING_PROFILES_ACTIVE: default
 
   cards:
     image: "phamtranduc/cards:v1"
     container_name: cards-ms
     ports:
       - "9000:9000"
-    depends_on:
-      configserver:
-        condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - ptd
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "cards"
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
-      SPRING_PROFILES_ACTIVE: default
+
+
 networks:
   ptd:
     driver: "bridge"

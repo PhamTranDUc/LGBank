@@ -1,6 +1,30 @@
 server:
   port: 8090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  build:
+    version: "1.0"
 spring:
+  application:
+    name: "loans"
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  profiles:
+    active: prod
+
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -14,20 +38,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  config:
-    import:
-      - "application_qa.yml"
-      - "application_prod.yml"
-  profiles:
-    active:
-      - "qa"
-build:
-  version: "1.0"
-accounts:
-  message: "Welcome to LGBank Default Loans APIs"
-  contactDetails:
-    name: "PhamTranDuc-default"
-    email: "phamtranducdefault@gmail.com"
-  onCallSupport:
-    - "(+86)2293627"
+
+
+
+
+
 

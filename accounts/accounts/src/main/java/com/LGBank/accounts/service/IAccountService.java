@@ -4,7 +4,7 @@ import com.LGBank.accounts.dto.CustomerDto;
 
 public interface IAccountService {
 
-    public void createAccount(CustomerDto customerDto);
+    void createAccount(CustomerDto customerDto);
 
     CustomerDto fetchAccountDetail(String mobileNumber);
 

@@ -2,44 +2,61 @@
 server:
  port: 9000
 spring:
- datasource:
-  url: jdbc:h2:mem:testdb
-  driverClassName: org.h2.Driver
-  username: sa
-  password: ''
- h2:
-   console:
-    enabled: true
- jpa:
-   database-platform: org.hibernate.dialect.H2Dialect
-   hibernate:
-    ddl-auto: update
-   show-sql: true
- config:
-   import:
-     - "application_qa.yml"
-     - "application_prod.yml"
-   profiles:
-     active:
-       - "prod"
+  application:
+    name: "cards"
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  profiles:
+    active:
+      - "prod"
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
 build:
   version: "1.0"
-accounts:
-  message: "Welcome to LGBank Default Cards APIs"
-  contactDetails:
-    name: "PhamTranDuc-default"
-    email: "phamtranducdefault@gmail.com"
-  onCallSupport:
-    - "(+86)2293627"
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
 
-#build:
-#  version: "1.0"
-#accounts:
-#  message: "Welcome to LGBank Default APIs"
-#  contactDetails:
-#    name: "PhamTranDuc-default"
-#    email: "phamtranducdefault@gmail.com"
-#  onCallSupport:
-#    - "(+86)2293627"
+endpoints:
+  shutdown:
+    enabled: true
 
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "cards"
+    description: "LG Bank Cards Application"
+    version: "1.0.0"

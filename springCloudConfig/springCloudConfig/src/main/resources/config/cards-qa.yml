@@ -1,0 +1,10 @@
+build:
+  version: "2.0"
+accounts:
+  message: "Welcome to LGBank QA Cards APIs"
+  contactDetails:
+    name: "PhamTranDuc-qa"
+    email: "phamtranducqa@gmail.com"
+  onCallSupport:
+    - "(+86)2293627"
+

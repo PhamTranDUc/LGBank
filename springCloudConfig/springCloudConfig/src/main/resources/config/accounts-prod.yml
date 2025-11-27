@@ -1,15 +1,10 @@
-spring:
-  config:
-    activate:
-      on-profile: "prod"
-
-
 build:
-  version: 3.0
+  version: "3.0"
+
 accounts:
   message: "Welcome to LGBank Prod APIs"
   contactDetails:
     name: "PhamTranDuc-prod"
     email: "phamtranducprod@gmail.com"
   onCallSupport:
-    -(+86)2293627
+    - "(+86)2293627"

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class LoansController {
 
+    @Value("${management.build.version}")
+    private String buildVersion;
+
     @Autowired
     private LoanContactInforDto loanContactInforDto;
 
-    public LoansController(LoanContactInforDto loanContactInforDto){
-        this.loanContactInforDto=loanContactInforDto;
+    public LoansController(ILoansService iLoansService){
+        this.iLoansService=iLoansService;
     }
 
     private ILoansService iLoansService;
@@ -83,6 +87,11 @@ public class LoansController {
     public ResponseEntity<LoanContactInforDto> getInfor(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(loanContactInforDto);
+    }
+
+    @GetMapping()
+    public ResponseEntity<String> getBuildVersion(){
+        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
 }

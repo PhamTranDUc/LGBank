@@ -60,3 +60,9 @@ info:
     name: "cards"
     description: "LG Bank Cards Application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      LGBank:
+        cards: DEBUG

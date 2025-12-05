@@ -64,6 +64,12 @@ info:
     description: "LG Bank Loans Application"
     version: "1.0.0"
 
+logging:
+  level:
+    com:
+      LGBank:
+        loans: DEBUG
+
 
 
 

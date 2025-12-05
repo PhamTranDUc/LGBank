@@ -29,13 +29,13 @@ public class ApigatewayApplication {
 						p -> p
 								.path("/lg-bank/cards/**")
 								.filters(f -> f.rewritePath("/lg-bank/cards/(?<segment>.*)","/${segment}"))
-								.uri("lb:CARDS")
+								.uri("lb://CARDS")
 				)
 				.route(
 						p -> p
 								.path("/lg-bank/loans/**")
-								.filters(f -> f.rewritePath("/lg-bank/loans/(?<segment>.*)", "${segment}"))
-								.uri("lb:LOANS")
+								.filters(f -> f.rewritePath("/lg-bank/loans/(?<segment>.*)", "/${segment}"))
+								.uri("lb://LOANS")
 				)
 				.build();
 	}

@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: "gatewayserver"
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  cloud:
+    gateway:
+      server: # Cấp độ mới được giới thiệu
+        webflux: # Chỉ định rõ đây là WebFlux Gateway
+          discovery:
+            locator:
+              enabled: false
+              lower-case-service-id: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+#      enabled: true
+
+  info:
+    env:
+      enabled: true
+
+endpoints:
+  shutdown:
+    enabled: true
+
+build:
+  version: "1.0"
+
+info:
+  app:
+    name: "gateway"
+    description: "LG Bank Api Gateway Application"
+    version: "1.0.0"
+
+

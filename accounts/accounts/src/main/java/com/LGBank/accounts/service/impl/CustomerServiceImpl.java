@@ -1,7 +1,9 @@
 package com.LGBank.accounts.service.impl;
 
 import com.LGBank.accounts.dto.AccountDto;
+import com.LGBank.accounts.dto.CardsDto;
 import com.LGBank.accounts.dto.CustomerDetailsDto;
+import com.LGBank.accounts.dto.LoansDto;
 import com.LGBank.accounts.entity.Accounts;
 import com.LGBank.accounts.entity.Customer;
 import com.LGBank.accounts.exceptions.ResourceNotFoundException;
@@ -13,6 +15,7 @@ import com.LGBank.accounts.service.ICustomerService;
 import com.LGBank.accounts.service.client.CardsFeignClient;
 import com.LGBank.accounts.service.client.LoansFeignClient;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,8 +40,14 @@ public class CustomerServiceImpl implements ICustomerService {
 
         CustomerDetailsDto customerDetailsDto = CustomerMapper.mapToCustomerDetailsDto(customer, new CustomerDetailsDto());
         customerDetailsDto.setAccountDto(AccountMapper.toAccountDto(accounts, new AccountDto()));
-        customerDetailsDto.setLoansDto(loansFeignClient.fetchLoanDetail(correlationId,mobileNumber).getBody());
-        customerDetailsDto.setCardsDto(cardsFeignClient.fetchCardDetails(correlationId,mobileNumber).getBody());
+        ResponseEntity<LoansDto> loansDto = loansFeignClient.fetchLoanDetail(correlationId,mobileNumber);
+        if(loansDto != null){
+            customerDetailsDto.setLoansDto(loansDto.getBody());
+        }
+        ResponseEntity<CardsDto> cardsDto = cardsFeignClient.fetchCardDetails(correlationId,mobileNumber);
+        if (cardsDto != null){
+            customerDetailsDto.setCardsDto(cardsDto.getBody());
+        }
         return customerDetailsDto;
     }
 }

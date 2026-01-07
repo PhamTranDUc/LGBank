@@ -5,8 +5,11 @@ import com.LGBank.accounts.dto.AccountsContactInfoDto;
 import com.LGBank.accounts.dto.CustomerDto;
 import com.LGBank.accounts.dto.ResponseDto;
 import com.LGBank.accounts.service.IAccountService;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     private IAccountService accountService;
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     private AccountsContactInfoDto accountsContactInfoDto;
@@ -76,10 +80,21 @@ public class AccountController {
         }
     }
 
+    @Retry(name = "getBuildInfor",fallbackMethod = "getInforFallBack")
     @GetMapping("/build-infor")
     public ResponseEntity<AccountsContactInfoDto> getInfor(){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(accountsContactInfoDto);
+        logger.debug("getBuldInfor() method Invoked");
+        throw new NullPointerException();
+//            return ResponseEntity.status(HttpStatus.OK)
+//                    .body(accountsContactInfoDto);
         }
+
+
+    public ResponseEntity<AccountsContactInfoDto> getInforFallBack(Throwable throwable){
+        accountsContactInfoDto.setMessage("FallBack");
+        logger.debug("getBuldInfor() fallback");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
+    }
 
 }

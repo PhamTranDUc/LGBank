@@ -11,7 +11,7 @@
 	<groupId>com.LgBank</groupId>
 	<artifactId>spring_cloud_config</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springCloudConfig</name>
+	<name>spring_cloud_config</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -76,15 +76,15 @@
 				<version>3.4.6</version>
 				<configuration>
 					<allowInsecureRegistries>true</allowInsecureRegistries>
+						<!-- Image name (Docker Hub hoặc local) -->
 					<from>
-						<image>eclipse-temurin:17-jre</image>
+						<image>docker://eclipse-temurin:17-jre</image>
 					</from>
 					<to>
-						<!-- Image name (Docker Hub hoặc local) -->
 						<image>phamtranduc/${project.artifactId}:v1</image>
 					</to>
 					<container>
-						<mainClass>com.LgBank.SpringCloudConfigApplication</mainClass> <!-- đổi thành tên main class thật -->
+						<mainClass>com.LgBank.springCloudConfigApplication</mainClass>
 						<ports>
 							<port>8071</port>
 						</ports>

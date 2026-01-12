@@ -19,7 +19,9 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8071
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071/
 
   microservice-eureka-config:
     extends:

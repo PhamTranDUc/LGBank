@@ -84,7 +84,7 @@
 						<image>phamtranduc/${project.artifactId}:v1</image>
 					</to>
 					<container>
-						<mainClass>com.LgBank.springCloudConfigApplication</mainClass>
+						<mainClass>com.LGBank.springCloudConfig.SpringCloudConfigApplication</mainClass>
 						<ports>
 							<port>8071</port>
 						</ports>
@@ -102,5 +102,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

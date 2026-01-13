@@ -16,12 +16,22 @@ spring:
           httpclient:
             connect-timeout: 1000
             response-timeout: 5s
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
   endpoint:
+    health:
+      probes:
+        enabled: true
     gateway:
       access: unrestricted
 #      enabled: true

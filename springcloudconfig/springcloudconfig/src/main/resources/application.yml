@@ -19,15 +19,15 @@ spring:
           clone-on-start: true
           force-pull: true
 
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
-#        native:
-#          search-locations: classpath:/config
-encrypt:
-  key: "DINHTHIHANPHAMTRANDUC"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+##        native:
+##          search-locations: classpath:/config
+#encrypt:
+#  key: "DINHTHIHANPHAMTRANDUC"
 
 management:
   endpoints:

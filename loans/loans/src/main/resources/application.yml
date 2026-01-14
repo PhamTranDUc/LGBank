@@ -1,6 +1,15 @@
 server:
   port: 8090
 
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eurekaserver:8070/eureka/
+
 management:
   endpoints:
     web:
@@ -24,16 +33,16 @@ spring:
     name: "loans"
 
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: "optional:configserver:http://configserver:8071/"
 
   profiles:
     active: prod
 
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -53,14 +62,7 @@ spring:
 endpoints:
   shutdown:
     enabled: true
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+
 
 info:
   app:

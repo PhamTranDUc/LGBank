@@ -1,6 +1,22 @@
 server:
   port: 8080
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
 spring:
   application:
     name: "accounts"
@@ -11,13 +27,15 @@ spring:
 
 
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: "optional:configserver:http://configserver:8071/"
 
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+
+
 
   profiles:
     active: prod
@@ -38,21 +56,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
-  endpoint:
-    health:
-      probes:
-        enabled: true
   info:
     env:
       enabled: true
@@ -71,7 +74,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+      defaultZone: http://eurekaserver:8070/eureka/
 resilience4j:
   circuitbreaker:
     configs:

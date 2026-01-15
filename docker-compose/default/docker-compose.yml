@@ -143,6 +143,20 @@ services:
     extends:
       file: common-config.yml
       service: client-config
+
+  prometheus:
+    image: prom/prometheus:v3.8.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+
+
   read:
     image: grafana/loki:latest
     command: "-config.file=/etc/loki/config.yaml -target=read"
@@ -261,7 +275,7 @@ services:
   backend:
     image: grafana/loki:latest
     volumes:
-      - ./loki/loki-config.yaml:/etc/loki/config.yaml
+      - ../loki/loki-config.yaml:/etc/loki/config.yaml
     ports:
       - "3100"
       - "7946"

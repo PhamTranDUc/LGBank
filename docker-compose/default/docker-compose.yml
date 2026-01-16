@@ -150,7 +150,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -244,6 +244,8 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     depends_on:
       - gateway
+    volumes:
+      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     entrypoint:
       - sh
       - -euc
@@ -275,7 +277,7 @@ services:
   backend:
     image: grafana/loki:latest
     volumes:
-      - ../loki/loki-config.yaml:/etc/loki/config.yaml
+      - ./loki/loki-config.yaml:/etc/loki/config.yaml
     ports:
       - "3100"
       - "7946"

@@ -41,6 +41,8 @@ services:
     extends:
       file: common-config.yml
       service: microservice-base-config
+    environment:
+      OTEL_SERVICE_NAME: "configserver"
 
   accounts:
     image: "phamtranduc/accounts:v1"
@@ -63,6 +65,7 @@ services:
       service: client-config
     environment:
       SPRING_APPLICATION_NAME: "accounts"
+      OTEL_SERVICE_NAME: "accounts"
 
   loans:
     image: "phamtranduc/loans:v1"
@@ -81,6 +84,7 @@ services:
       service: client-config
     environment:
       SPRING_APPLICATION_NAME: "loans"
+      OTEL_SERVICE_NAME: "loans"
 
 #  cards:
 #    image: "phamtranduc/cards:v1"
@@ -103,6 +107,7 @@ services:
 #      service: client-config
 #    environment:
 #      SPRING_APPLICATION_NAME: "cards"
+#      OTEL_SERVICE_NAME: "cards"
 
   eurekaserver:
     image: "phamtranduc/eurekaserver:v1"
@@ -235,6 +240,19 @@ services:
       retries: 5
     networks:
       - ptd
+
+  tempo:
+    image: grafana/tempo:2.9.0
+    container_name: tempo
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      - "3110:3100"
+      - "4318:4318"
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo-config.yml
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   grafana:
     image: grafana/grafana:latest

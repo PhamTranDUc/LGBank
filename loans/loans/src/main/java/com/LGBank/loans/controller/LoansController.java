@@ -53,9 +53,9 @@ public class LoansController {
             @RequestHeader("lgbank-correlation-id") String correlationId,
             @RequestParam @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                      String mobileNumber) {
-        logger.debug("lgbank-correlation-id found: {} ", correlationId);
-        logger.debug("retry");
+        logger.info("fetchCustomer detail start");
         LoansDto loansDto = iLoansService.fetchByPhoneNumber(mobileNumber);
+        logger.info("fetchCustomer detail end");
         return ResponseEntity.status(HttpStatus.OK).body(loansDto);
     }
 

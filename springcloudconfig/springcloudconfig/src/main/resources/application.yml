@@ -46,6 +46,12 @@ management:
         enabled: true
 
 
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+
 #//management:
 #  endpoints:
 #    web:

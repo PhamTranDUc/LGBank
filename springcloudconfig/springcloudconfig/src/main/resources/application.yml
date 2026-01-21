@@ -19,15 +19,15 @@ spring:
           clone-on-start: true
           force-pull: true
 
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
-#        native:
-#          search-locations: classpath:/config
-encrypt:
-  key: "DINHTHIHANPHAMTRANDUC"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+##        native:
+##          search-locations: classpath:/config
+#encrypt:
+#  key: "DINHTHIHANPHAMTRANDUC"
 
 management:
   endpoints:
@@ -44,4 +44,27 @@ management:
     health:
       probes:
         enabled: true
+
+
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+
+#//management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#
+#  health:
+#    readiness-state:
+#      enabled: true
+#    liveness-state:
+#      enabled: true
+#  endpoint:
+#    health:
+#      probes:
+#        enabled: true
 

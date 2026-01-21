@@ -10,13 +10,25 @@ services:
       resources:
         limits:
           memory: 700m
+    environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-2.22.0.jar"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
 
-  microservice-configserver-config:
+  client-config:
     extends:
       service: microservice-base-config
-    depends_on:
-      configserver:
-        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8071
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071/
+
+  eureka-server-config:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8071
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071/
+      SERVER_ADDRESS: 0.0.0.0

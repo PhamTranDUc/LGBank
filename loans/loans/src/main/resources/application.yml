@@ -1,17 +1,30 @@
 server:
   port: 8090
 
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eurekaserver:8070/eureka/
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
   endpoint:
-    shutdown:
-      enabled: true
-  info:
-    env:
-      enabled: true
+    health:
+      probes:
+        enabled: true
 
   build:
     version: "1.0"
@@ -20,16 +33,16 @@ spring:
     name: "loans"
 
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: "optional:configserver:http://configserver:8071/"
 
   profiles:
     active: prod
 
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -49,14 +62,7 @@ spring:
 endpoints:
   shutdown:
     enabled: true
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+
 
 info:
   app:
@@ -69,6 +75,9 @@ logging:
     com:
       LGBank:
         loans: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
 
 
 

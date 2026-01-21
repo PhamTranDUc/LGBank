@@ -8,7 +8,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://eurekaserver:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 
 management:
   endpoints:
@@ -33,7 +33,7 @@ spring:
     name: "loans"
 
   config:
-    import: "optional:configserver:http://configserver:8071/"
+    import: "optional:configserver:http://localhost:8071/"
 
   profiles:
     active: prod

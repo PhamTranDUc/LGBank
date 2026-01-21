@@ -3,7 +3,7 @@ spring:
     name: "gatewayserver"
 
   config:
-    import: "optional:configserver:http://configserver:8071/"
+    import: "optional:configserver:http://localhost:8071/"
 
   cloud:
     gateway:

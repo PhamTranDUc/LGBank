@@ -3,7 +3,13 @@ spring:
     name: "gatewayserver"
 
   config:
-    import: "optional:configserver:http://configserver:8071/"
+    import: "optional:configserver:http://localhost:8071/"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8060/realms/Dev/protocol/openid-connect/certs"
 
   cloud:
     gateway:

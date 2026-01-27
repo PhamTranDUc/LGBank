@@ -21,13 +21,28 @@ spring:
   application:
     name: "accounts"
   cloud:
+    function:
+      definition: updateStatusAccount
     openfeign:
       circuitbreaker:
         enabled: true
+    stream:
+      bindings:
+        sendCommunication-out-0:
+          destination: send-communication
+        updateStatusAccount-in-0:
+          destination: communication-send
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s
+
 
 
   config:
-    import: "optional:configserver:http://configserver:8071/"
+    import: "optional:configserver:http://localhost:8071/"
 
 #  rabbitmq:
 #    host: "localhost"
@@ -74,7 +89,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://eurekaserver:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 resilience4j:
   circuitbreaker:
     configs:

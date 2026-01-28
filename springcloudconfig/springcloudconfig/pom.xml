@@ -91,7 +91,7 @@
 						<image>phamtranduc/${project.artifactId}:v1</image>
 					</to>
 					<container>
-						<mainClass>com.LGBank.springCloudConfig.SpringCloudConfigApplication</mainClass>
+						<mainClass>com.LgBank.springCloudConfig.SpringCloudConfigApplication</mainClass>
 						<ports>
 							<port>8071</port>
 						</ports>

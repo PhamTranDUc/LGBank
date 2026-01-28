@@ -20,4 +20,7 @@ public class Accounts extends BaseEntity {
 
     @Column(name = "branch_address")
     private String branchAddress;
+
+    @Column(name = "active")
+    private boolean active = false;
 }

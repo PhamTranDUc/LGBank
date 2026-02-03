@@ -24,6 +24,51 @@ services:
 #      file: common-config.yml
 #      service: network-deploy-service
 
+  kafka:
+    image: apache/kafka:4.1.1
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://kafka:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -z kafka 9092 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7
+    container_name: keycloak
+    ports:
+      - "127.0.0.1:7080:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: "admin"
+      KC_BOOTSTRAP_ADMIN_PASSWORD: "admin"
+    command: "start-dev"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   configserver:
     image: "phamtranduc/spring_cloud_config:v1"
     container_name: configserver-ms
@@ -66,6 +111,21 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+      SPRING_KAFKA_BINDER_BROKERS: "kafka:9092"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
+
+  message:
+    image: "phamtranduc/message:v1"
+    container_name: message-ms
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
+    extends:
+      file: common-config.yml
+      service: client-config
 
   loans:
     image: "phamtranduc/loans:v1"
@@ -85,6 +145,9 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "loans"
       OTEL_SERVICE_NAME: "loans"
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+      SPRING_KAFKA_BINDER_BROKERS: "kafka:9092"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
 #  cards:
 #    image: "phamtranduc/cards:v1"
@@ -108,6 +171,9 @@ services:
 #    environment:
 #      SPRING_APPLICATION_NAME: "cards"
 #      OTEL_SERVICE_NAME: "cards"
+#      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+#      SPRING_KAFKA_BINDER_BROKERS: "kafka:9092"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
   eurekaserver:
     image: "phamtranduc/eurekaserver:v1"
@@ -129,6 +195,8 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
       OTEL_SERVICE_NAME: "eurekaserver"
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+
 
   gatewayserver:
     image: "phamtranduc/apigateway:v1"
@@ -145,6 +213,9 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
       OTEL_SERVICE_NAME: "gatewayserver"
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: "http://keycloak:8060/realms/Dev/protocol/openid-connect/certs"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
     extends:
       file: common-config.yml
       service: client-config
